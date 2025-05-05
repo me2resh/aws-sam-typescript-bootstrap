@@ -2,6 +2,8 @@
 
 This project is a simple REST API application for retrieving patient appointments. The application is built using AWS SAM (Serverless Application Model) and TypeScript.
 
+For detailed documentation, please visit our [Documentation](docs/index.md).
+
 ## Index
 
 1. [Application Directory Structure](#application-directory-structure)

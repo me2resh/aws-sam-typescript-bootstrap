@@ -4,7 +4,7 @@ version = 0.1
 
 [default]
 [default.global.parameters]
-stack_name = "appointments-app"
+stack_name = "patients-appointments-api"
 
 [default.build.parameters]
 cached = true
@@ -13,14 +13,14 @@ parallel = true
 [default.validate.parameters]
 lint = true
 
+[default.deploy]
 [default.deploy.parameters]
-capabilities = "CAPABILITY_IAM"
+stack_name = "patients-appointments-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket"
+s3_prefix = "patients-appointments-api"
+region = "us-east-1"
 confirm_changeset = true
-resolve_s3 = true
-stack_name = "appointments-app"
-s3_prefix = "appointments-app"
-region = "eu-west-1"
-disable_rollback = true
+capabilities = "CAPABILITY_IAM"
 image_repositories = []
 
 [default.package.parameters]
@@ -34,3 +34,39 @@ warm_containers = "EAGER"
 
 [default.local_start_lambda.parameters]
 warm_containers = "EAGER"
+
+[dev]
+[dev.deploy]
+[dev.deploy.parameters]
+stack_name = "patients-appointments-api-dev"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket"
+s3_prefix = "patients-appointments-api-dev"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=dev"
+image_repositories = []
+
+[staging]
+[staging.deploy]
+[staging.deploy.parameters]
+stack_name = "patients-appointments-api-staging"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket"
+s3_prefix = "patients-appointments-api-staging"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=staging"
+image_repositories = []
+
+[prod]
+[prod.deploy]
+[prod.deploy.parameters]
+stack_name = "patients-appointments-api-prod"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket"
+s3_prefix = "patients-appointments-api-prod"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Environment=prod"
+image_repositories = []
