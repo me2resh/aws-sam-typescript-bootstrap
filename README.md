@@ -2,7 +2,75 @@
 
 This project is a simple REST API application for retrieving patient appointments. The application is built using AWS SAM (Serverless Application Model) and TypeScript.
 
+## 📚 Documentation
+
 For detailed documentation, please visit our [Documentation](docs/index.md).
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+Before you begin, ensure you have the following software installed on your system:
+
+-   Node.js
+-   Docker
+-   AWS SAM CLI
+
+### Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone https://github.com/me2resh/aws-sam-typescript-bootstrap.git
+cd aws-sam-typescript-bootstrap
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Run tests:
+```bash
+npm test
+```
+
+4. Run locally:
+```bash
+sam build
+sam local start-api
+```
+
+### Deployment
+
+#### Manual Deployment
+
+To deploy manually to AWS:
+
+```bash
+sam build
+sam deploy --guided
+```
+
+#### Automated Deployment (GitHub Actions)
+
+The project uses GitHub Actions for automated deployment. Currently, it's configured to deploy to the dev environment only.
+
+1. Set up AWS credentials in GitHub:
+   - Go to your repository settings
+   - Navigate to Secrets and Variables > Actions
+   - Add these secrets:
+     - `AWS_ACCESS_KEY_ID`
+     - `AWS_SECRET_ACCESS_KEY`
+
+2. Push to main branch to trigger deployment:
+```bash
+git push origin main
+```
+
+The workflow will:
+- Run tests
+- Build the application
+- Deploy to dev environment
 
 ## Index
 
