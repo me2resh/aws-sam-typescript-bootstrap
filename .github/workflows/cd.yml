@@ -1,49 +1,47 @@
-name: Continuous Deployment
+name: Backend SAM Deployment to Dev
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-env:
-  AWS_REGION: us-east-1
-  NODE_VERSION: '18.x'
+    branches:
+      - main
 
 jobs:
-  deploy-dev:
-    name: Deploy to Dev
+  deploy:
     runs-on: ubuntu-latest
-    environment: dev
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    
+
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Run tests
-        run: npm test
-        
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-          
-      - name: Deploy to Dev
-        run: |
-          sam build
-          sam deploy --config-env dev --no-fail-on-empty-changeset
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build the SAM application
+      run: |
+        sam build 
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+        aws-region: ${{ vars.AWS_REGION_DEV }}
+
+    - name: Deploy the SAM application
+      run: |
+        sam deploy --config-file samconfig-dev.toml --config-env dev --no-confirm-changeset --no-fail-on-empty-changeset
+
+    - name: Output stack information
+      run: |
+        aws cloudformation describe-stacks --stack-name patients-appointments-api-dev --region ${{ vars.AWS_REGION_DEV }}
 
   # Commented out for experimental phase
   # deploy-staging:
